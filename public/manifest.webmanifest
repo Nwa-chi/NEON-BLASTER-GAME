@@ -1,0 +1,20 @@
+{
+  "name": "Neon Blaster",
+  "short_name": "NeonBlaster",
+  "description": "A fast-paced neon arena shooter. Dodge, destroy, and chase high scores.",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05060f",
+  "theme_color": "#05060f",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment", "arcade"]
+}
