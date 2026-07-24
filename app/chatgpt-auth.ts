@@ -15,7 +15,7 @@ const NAME_ENCODING_HEADER = "oai-authenticated-user-full-name-encoding";
 // the public repository while remaining reliable in runtimes that do not
 // expose hosted environment bindings through process.env.
 const ADMIN_EMAIL_HASHES = new Set([
-  "e54ab0e912bb4630b451961461fa1537875a963642d464b440f1b1535b1dacb5",
+  "8b80d5b37488ddab57acb5e31f78120a9c42af85f41e086a64cfdb6a87b63621",
 ]);
 
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
