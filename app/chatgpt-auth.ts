@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { createHash } from "node:crypto";
 
 export type ChatGPTUser = {
   displayName: string;
@@ -10,6 +11,12 @@ export type ChatGPTUser = {
 const EMAIL_HEADER = "oai-authenticated-user-email";
 const NAME_HEADER = "oai-authenticated-user-full-name";
 const NAME_ENCODING_HEADER = "oai-authenticated-user-full-name-encoding";
+// Server-only SHA-256 allowlist. This keeps administrator addresses out of
+// the public repository while remaining reliable in runtimes that do not
+// expose hosted environment bindings through process.env.
+const ADMIN_EMAIL_HASHES = new Set([
+  "e54ab0e912bb4630b451961461fa1537875a963642d464b440f1b1535b1dacb5",
+]);
 
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
@@ -32,11 +39,13 @@ export async function requireChatGPTUser(returnTo: string): Promise<ChatGPTUser>
 }
 
 export function isAuthorizedAdmin(email: string): boolean {
+  const normalizedEmail = email.trim().toLowerCase();
+  const emailHash = createHash("sha256").update(normalizedEmail).digest("hex");
   const allowed = (process.env.ADMIN_EMAILS ?? "")
     .split(",")
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean);
-  return allowed.includes(email.trim().toLowerCase());
+  return ADMIN_EMAIL_HASHES.has(emailHash) || allowed.includes(normalizedEmail);
 }
 
 export function signOutPath(returnTo = "/admin/login") {
